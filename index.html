@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Casaca Retro — Camisetas de fútbol vintage</title>
+    <meta
+      name="description"
+      content="Casaca Retro: camisetas de fútbol de colección, restauradas y numeradas como en los años 70, 80 y 90."
+    />
+
+    <!-- Tailwind v4 Play CDN (official) -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <!-- Font Awesome (icons) -->
+    <script
+      src="https://kit.fontawesome.com/3a0df0ed78.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Display + body typefaces: a condensed stadium-poster face for headlines, a workmanlike grotesk for reading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Staatliches&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+
+    <!--
+      Tailwind v4: custom CSS with all directives is allowed when using `type="text/tailwindcss"`.
+      Palette is built around a matchday program: deep pitch green, aged parchment,
+      an old-shirt maroon, and the mustard trim tape common on 70s–80s kits.
+    -->
+    <style type="text/tailwindcss">
+      /* =========================
+         1) THEME TOKENS (v4)
+         ========================= */
+      @theme {
+        /* Pitch green — the dark anchor color */
+        --color-pitch-900: oklch(0.22 0.05 165);
+        --color-pitch-800: oklch(0.28 0.06 165);
+        --color-pitch-700: oklch(0.36 0.07 165);
+        --color-pitch-600: oklch(0.44 0.08 165);
+        --color-pitch-100: oklch(0.93 0.02 165);
+
+        /* Old-shirt maroon — primary accent */
+        --color-maroon-700: oklch(0.34 0.1 20);
+        --color-maroon-600: oklch(0.42 0.13 20);
+        --color-maroon-500: oklch(0.5 0.15 20);
+        --color-maroon-100: oklch(0.93 0.03 20);
+
+        /* Mustard trim tape — secondary accent, used sparingly */
+        --color-gold-500: oklch(0.78 0.13 85);
+        --color-gold-600: oklch(0.7 0.13 85);
+
+        /* Parchment surfaces (aged matchday programme paper) */
+        --color-parchment-50: oklch(0.97 0.015 85);
+        --color-parchment-100: oklch(0.94 0.02 85);
+        --color-surface: var(--color-parchment-50);
+        --color-surface-weak: var(--color-parchment-100);
+        --color-ink: oklch(0.22 0.02 60);
+        --color-ink-weak: oklch(0.4 0.02 60);
+
+        /* Typography */
+        --font-display: "Staatliches", ui-sans-serif, system-ui;
+        --font-sans: "Archivo", ui-sans-serif, system-ui, -apple-system,
+          "Segoe UI", Roboto, "Helvetica Neue", Arial;
+
+        --breakpoint-3xl: 120rem;
+      }
+
+      /* =========================
+         2) DARK MODE (class strategy)
+         ========================= */
+      @custom-variant dark (&:where(.dark, .dark *));
+      .dark {
+        --color-surface: var(--color-pitch-900);
+        --color-surface-weak: var(--color-pitch-800);
+        --color-ink: oklch(0.96 0.01 85);
+        --color-ink-weak: oklch(0.82 0.02 85);
+      }
+
+      /* =========================
+         3) COMPONENTS LAYER
+         ========================= */
+      @layer components {
+        .btn {
+          @apply inline-flex items-center gap-2 rounded px-5 py-2.5 font-semibold transition outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
+        }
+        .btn-primary {
+          @apply bg-maroon-600 text-parchment-50 hover:bg-maroon-700 focus-visible:ring-maroon-600 ring-offset-surface;
+        }
+        .btn-secondary {
+          @apply bg-transparent text-pitch-800 dark:text-parchment-50 border-2 border-pitch-800 dark:border-parchment-50 hover:bg-pitch-800 hover:text-parchment-50 dark:hover:bg-parchment-50 dark:hover:text-pitch-900 focus-visible:ring-pitch-700 ring-offset-surface;
+        }
+        .btn-ghost {
+          @apply text-pitch-800 hover:bg-pitch-800/10 dark:text-parchment-100 dark:hover:bg-white/10;
+        }
+
+        /* Card with a stitched border, like a swing tag sewn onto a shirt */
+        .tag-card {
+          @apply relative rounded bg-white/70 dark:bg-white/5 p-6;
+          border: 2px dashed color-mix(in oklch, var(--color-ink) 25%, transparent);
+        }
+        .tag-card-solid {
+          @apply relative rounded-lg bg-white/80 dark:bg-white/5 p-6 shadow-sm ring-1 ring-black/5;
+        }
+
+        /* Era badge — printed like a sew-in size tag, slightly angled */
+        .era-badge {
+          @apply inline-flex items-center justify-center rounded-sm px-2.5 py-1 text-xs font-bold text-parchment-50;
+          font-family: var(--font-display);
+          letter-spacing: 0.03em;
+        }
+        .era-70 { @apply bg-pitch-700; }
+        .era-80 { @apply bg-maroon-600; }
+        .era-90 { @apply bg-pitch-600; }
+
+        .input {
+          @apply w-full rounded border border-ink/20 bg-white/90 dark:bg-white/10 px-4 py-2 text-sm placeholder:text-ink-weak/70 outline-none focus-visible:ring-2 focus-visible:ring-maroon-600;
+        }
+
+        .section-title {
+          font-family: var(--font-display);
+          letter-spacing: 0.01em;
+          @apply text-3xl sm:text-4xl text-pitch-900 dark:text-parchment-50;
+        }
+
+        .icon-on-soft {
+          @apply text-maroon-600 dark:text-gold-500;
+        }
+      }
+    </style>
+
+    <script>
+      const saved = localStorage.getItem("theme");
+      const prefersDark = window.matchMedia(
+        "(prefers-color-scheme: dark)"
+      ).matches;
+      if (saved === "dark" || (!saved && prefersDark)) {
+        document.documentElement.classList.add("dark");
+      }
+    </script>
+
+    <meta name="color-scheme" content="light dark" />
+  </head>
+
+  <body
+    class="font-sans bg-surface text-ink dark:bg-surface dark:text-ink min-h-dvh selection:bg-gold-500/50 selection:text-ink"
+  >
+    <!-- =======================
+         HEADER / NAVBAR
+         ======================= -->
+    <header
+      class="sticky top-0 z-50 bg-surface/85 backdrop-blur border-b-4 border-pitch-800 dark:border-gold-500"
+    >
+      <nav
+        class="max-w-screen-xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between"
+      >
+        <a class="flex items-center gap-3" href="#home" aria-label="Casaca Retro, inicio">
+          <span
+            class="inline-flex h-10 w-10 items-center justify-center rounded bg-pitch-800 text-parchment-50 dark:bg-gold-500 dark:text-pitch-900"
+          >
+            <i class="fa-solid fa-shirt" aria-hidden="true"></i>
+          </span>
+          <span class="text-xl" style="font-family: var(--font-display); letter-spacing: 0.02em;">
+            Casaca Retro
+          </span>
+        </a>
+
+        <div class="hidden md:flex items-center gap-1">
+          <a href="#coleccion" class="btn btn-ghost">Colección</a>
+          <a href="#decadas" class="btn btn-ghost">Décadas</a>
+          <a href="#cuidado" class="btn btn-ghost">Cuidado</a>
+          <a href="#contacto" class="btn btn-ghost">Contacto</a>
+        </div>
+
+        <button
+          id="themeToggle"
+          class="btn btn-ghost"
+          type="button"
+          aria-pressed="false"
+          aria-label="Cambiar a modo oscuro"
+        >
+          <i class="fa-solid fa-circle-half-stroke" aria-hidden="true"></i>
+        </button>
+      </nav>
+    </header>
+
+    <!-- =======================
+         HERO
+         ======================= -->
+    <section id="home" class="relative overflow-hidden">
+      <div
+        class="absolute inset-0 -z-10 bg-gradient-to-b from-pitch-100 to-surface dark:from-white/5 dark:to-surface"
+      ></div>
+
+      <!-- Oversized watermark number: the one bold move on the page -->
+      <span
+        aria-hidden="true"
+        class="pointer-events-none select-none absolute -right-6 -top-10 text-[16rem] sm:text-[22rem] leading-none text-pitch-800/[0.06] dark:text-gold-500/10"
+        style="font-family: var(--font-display);"
+        >10</span
+      >
+
+      <div
+        class="max-w-screen-xl mx-auto px-4 sm:px-6 py-16 sm:py-24 grid lg:grid-cols-2 gap-10 items-center relative"
+      >
+        <div>
+          <h1 class="text-4xl sm:text-6xl leading-[0.95]" style="font-family: var(--font-display); letter-spacing: 0.01em;">
+            No es una camiseta.
+            <span class="text-maroon-600 dark:text-gold-500">Es una final que viviste.</span>
+          </h1>
+          <p class="mt-5 text-lg text-ink-weak max-w-prose">
+            Rescatamos casacas de los 70, 80 y 90: telas originales, parches
+            cosidos y números que todavía huelen a domingo de estadio.
+          </p>
+
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="#coleccion" class="btn btn-primary">
+              <i class="fa-solid fa-shirt" aria-hidden="true"></i>
+              Ver la colección
+            </a>
+            <a href="#boletin" class="btn btn-secondary">
+              Aviso de nuevos ingresos
+            </a>
+          </div>
+
+          <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-ink-weak">
+            <span class="inline-flex items-center gap-2">
+              <i class="fa-solid fa-magnifying-glass icon-on-soft"></i> Autenticadas por año
+            </span>
+            <span class="inline-flex items-center gap-2">
+              <i class="fa-solid fa-scissors icon-on-soft"></i> Restauradas a mano
+            </span>
+            <span class="inline-flex items-center gap-2">
+              <i class="fa-solid fa-box icon-on-soft"></i> Unidad única por talla
+            </span>
+          </div>
+        </div>
+
+        <div class="tag-card-solid">
+          <div
+            class="aspect-square w-full max-w-sm mx-auto rounded bg-gradient-to-br from-pitch-100 to-parchment-100 dark:from-white/10 dark:to-white/5 grid place-items-center p-6"
+          >
+            <!-- Hero jersey illustration -->
+            <svg viewBox="0 0 200 200" class="w-full h-full max-w-[220px]">
+              <clipPath id="clipHero">
+                <path d="M60 20 L80 8 L100 20 L120 8 L140 20 L160 45 L140 65 L132 55 L132 175 L68 175 L68 55 L60 65 L40 45 Z" />
+              </clipPath>
+              <path d="M60 20 L80 8 L100 20 L120 8 L140 20 L160 45 L140 65 L132 55 L132 175 L68 175 L68 55 L60 65 L40 45 Z"
+                    fill="var(--color-maroon-600)" />
+              <g clip-path="url(#clipHero)">
+                <rect x="60" y="20" width="14" height="160" fill="var(--color-parchment-50)" />
+                <rect x="93" y="20" width="14" height="160" fill="var(--color-parchment-50)" />
+                <rect x="126" y="20" width="14" height="160" fill="var(--color-parchment-50)" />
+              </g>
+              <path d="M80 8 L100 20 L120 8" fill="none" stroke="var(--color-gold-500)" stroke-width="4" stroke-linecap="round" />
+              <text x="100" y="130" text-anchor="middle" font-size="52" fill="var(--color-parchment-50)" style="font-family: var(--font-display);">9</text>
+            </svg>
+          </div>
+          <p class="mt-4 text-sm text-ink-weak text-center">
+            Cada casaca lleva su ficha: club, temporada y estado de conservación.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================
+         COLECCIÓN
+         ======================= -->
+    <section id="coleccion" class="max-w-screen-xl mx-auto px-4 sm:px-6 py-16">
+      <div class="flex items-end justify-between gap-4">
+        <h2 class="section-title">Piezas destacadas</h2>
+        <a class="btn btn-ghost" href="#decadas">Ver por década</a>
+      </div>
+
+      <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Jersey card 1 -->
+        <article class="tag-card">
+          <svg viewBox="0 0 200 200" class="h-40 w-full">
+            <clipPath id="clip1"><path d="M60 20 L80 8 L100 20 L120 8 L140 20 L160 45 L140 65 L132 55 L132 175 L68 175 L68 55 L60 65 L40 45 Z" /></clipPath>
+            <path d="M60 20 L80 8 L100 20 L120 8 L140 20 L160 45 L140 65 L132 55 L132 175 L68 175 L68 55 L60 65 L40 45 Z" fill="var(--color-pitch-700)" />
+            <g clip-path="url(#clip1)">
+              <rect x="55" y="60" width="90" height="14" fill="var(--color-parchment-50)" />
+              <rect x="55" y="100" width="90" height="14" fill="var(--color-parchment-50)" />
+            </g>
+            <text x="100" y="140" text-anchor="middle" font-size="40" fill="var(--color-parchment-50)" style="font-family: var(--font-display);">5</text>
+          </svg>
+          <div class="mt-4">
+            <div class="flex items-center justify-between">
+              <h3 class="text-lg font-semibold">Verdeamarela clásica</h3>
+              <span class="era-badge era-70">70s</span>
+            </div>
+            <p class="mt-2 text-sm text-ink-weak">
+              Algodón grueso, cuello redondo. La franela que definió una época dorada.
+            </p>
+            <p class="mt-3 font-semibold">$249.900</p>
+          </div>
+        </article>
+
+        <!-- Jersey card 2 -->
+        <article class="tag-card">
+          <svg viewBox="0 0 200 200" class="h-40 w-full">
+            <clipPath id="clip2"><path d="M60 20 L80 8 L100 20 L120 8 L140 20 L160 45 L140 65 L132 55 L132 175 L68 175 L68 55 L60 65 L40 45 Z" /></clipPath>
+            <path d="M60 20 L80 8 L100 20 L120 8 L140 20 L160 45 L140 65 L132 55 L132 175 L68 175 L68 55 L60 65 L40 45 Z" fill="var(--color-parchment-50)" stroke="var(--color-ink)" stroke-width="2" />
+            <g clip-path="url(#clip2)">
+              <rect x="90" y="8" width="20" height="170" fill="var(--color-maroon-600)" />
+            </g>
+            <text x="100" y="140" text-anchor="middle" font-size="40" fill="var(--color-ink)" style="font-family: var(--font-display);">7</text>
+          </svg>
+          <div class="mt-4">
+            <div class="flex items-center justify-between">
+              <h3 class="text-lg font-semibold">Blanca de gala 80</h3>
+              <span class="era-badge era-80">80s</span>
+            </div>
+            <p class="mt-2 text-sm text-ink-weak">
+              Banda central bordada, botones de nácar. Reservada para clásicos.
+            </p>
+            <p class="mt-3 font-semibold">$289.900</p>
+          </div>
+        </article>
+
+        <!-- Jersey card 3 -->
+        <article class="tag-card">
+          <svg viewBox="0 0 200 200" class="h-40 w-full">
+            <clipPath id="clip3"><path d="M60 20 L80 8 L100 20 L120 8 L140 20 L160 45 L140 65 L132 55 L132 175 L68 175 L68 55 L60 65 L40 45 Z" /></clipPath>
+            <path d="M60 20 L80 8 L100 20 L120 8 L140 20 L160 45 L140 65 L132 55 L132 175 L68 175 L68 55 L60 65 L40 45 Z" fill="var(--color-maroon-500)" />
+            <g clip-path="url(#clip3)">
+              <rect x="60" y="20" width="18" height="160" fill="var(--color-ink)" />
+              <rect x="96" y="20" width="18" height="160" fill="var(--color-ink)" />
+              <rect x="132" y="20" width="18" height="160" fill="var(--color-ink)" />
+            </g>
+            <text x="100" y="140" text-anchor="middle" font-size="40" fill="var(--color-gold-500)" style="font-family: var(--font-display);">11</text>
+          </svg>
+          <div class="mt-4">
+            <div class="flex items-center justify-between">
+              <h3 class="text-lg font-semibold">Rayas fugaces 90</h3>
+              <span class="era-badge era-90">90s</span>
+            </div>
+            <p class="mt-2 text-sm text-ink-weak">
+              Poliéster texturizado y estampado degradado, el estilo más noventero.
+            </p>
+            <p class="mt-3 font-semibold">$219.900</p>
+          </div>
+        </article>
+
+        <!-- Jersey card 4 -->
+        <article class="tag-card">
+          <svg viewBox="0 0 200 200" class="h-40 w-full">
+            <clipPath id="clip4"><path d="M60 20 L80 8 L100 20 L120 8 L140 20 L160 45 L140 65 L132 55 L132 175 L68 175 L68 55 L60 65 L40 45 Z" /></clipPath>
+            <path d="M60 20 L80 8 L100 20 L120 8 L140 20 L160 45 L140 65 L132 55 L132 175 L68 175 L68 55 L60 65 L40 45 Z" fill="var(--color-gold-600)" />
+            <g clip-path="url(#clip4)">
+              <rect x="55" y="90" width="90" height="10" fill="var(--color-pitch-800)" />
+            </g>
+            <text x="100" y="140" text-anchor="middle" font-size="40" fill="var(--color-pitch-900)" style="font-family: var(--font-display);">4</text>
+          </svg>
+          <div class="mt-4">
+            <div class="flex items-center justify-between">
+              <h3 class="text-lg font-semibold">Amarilla de entrenamiento</h3>
+              <span class="era-badge era-80">80s</span>
+            </div>
+            <p class="mt-2 text-sm text-ink-weak">
+              La que usaban antes del partido. Franja fina, corte recto.
+            </p>
+            <p class="mt-3 font-semibold">$179.900</p>
+          </div>
+        </article>
+
+        <!-- Jersey card 5 -->
+        <article class="tag-card">
+          <svg viewBox="0 0 200 200" class="h-40 w-full">
+            <clipPath id="clip5"><path d="M60 20 L80 8 L100 20 L120 8 L140 20 L160 45 L140 65 L132 55 L132 175 L68 175 L68 55 L60 65 L40 45 Z" /></clipPath>
+            <path d="M60 20 L80 8 L100 20 L120 8 L140 20 L160 45 L140 65 L132 55 L132 175 L68 175 L68 55 L60 65 L40 45 Z" fill="var(--color-pitch-900)" />
+            <g clip-path="url(#clip5)">
+              <rect x="60" y="20" width="90" height="160" fill="var(--color-pitch-600)" opacity="0.5" />
+              <rect x="55" y="20" width="10" height="160" fill="var(--color-gold-500)" />
+            </g>
+            <text x="100" y="140" text-anchor="middle" font-size="40" fill="var(--color-parchment-50)" style="font-family: var(--font-display);">6</text>
+          </svg>
+          <div class="mt-4">
+            <div class="flex items-center justify-between">
+              <h3 class="text-lg font-semibold">Verde noche europea</h3>
+              <span class="era-badge era-70">70s</span>
+            </div>
+            <p class="mt-2 text-sm text-ink-weak">
+              Filo dorado en el ribete, tela pesada de invierno continental.
+            </p>
+            <p class="mt-3 font-semibold">$259.900</p>
+          </div>
+        </article>
+
+        <!-- Jersey card 6 -->
+        <article class="tag-card">
+          <svg viewBox="0 0 200 200" class="h-40 w-full">
+            <clipPath id="clip6"><path d="M60 20 L80 8 L100 20 L120 8 L140 20 L160 45 L140 65 L132 55 L132 175 L68 175 L68 55 L60 65 L40 45 Z" /></clipPath>
+            <path d="M60 20 L80 8 L100 20 L120 8 L140 20 L160 45 L140 65 L132 55 L132 175 L68 175 L68 55 L60 65 L40 45 Z" fill="var(--color-parchment-100)" stroke="var(--color-maroon-600)" stroke-width="3" />
+            <g clip-path="url(#clip6)">
+              <rect x="60" y="60" width="90" height="8" fill="var(--color-maroon-600)" />
+              <rect x="60" y="76" width="90" height="8" fill="var(--color-pitch-700)" />
+            </g>
+            <text x="100" y="140" text-anchor="middle" font-size="40" fill="var(--color-ink)" style="font-family: var(--font-display);">10</text>
+          </svg>
+          <div class="mt-4">
+            <div class="flex items-center justify-between">
+              <h3 class="text-lg font-semibold">Alternativa de visita</h3>
+              <span class="era-badge era-90">90s</span>
+            </div>
+            <p class="mt-2 text-sm text-ink-weak">
+              Doble franja al pecho, la que se usaba fuera de casa en noches de lluvia.
+            </p>
+            <p class="mt-3 font-semibold">$199.900</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- =======================
+         DÉCADAS
+         ======================= -->
+    <section id="decadas" class="max-w-screen-xl mx-auto px-4 sm:px-6 py-16">
+      <h2 class="section-title">Compra por década</h2>
+      <p class="mt-2 text-ink-weak max-w-prose">
+        Cada década tiene su tela, su corte y su forma de envejecer bien.
+      </p>
+
+      <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div class="tag-card-solid">
+          <span class="era-badge era-70">70s</span>
+          <h3 class="mt-3 text-lg font-semibold">Algodón y cuello redondo</h3>
+          <p class="mt-2 text-sm text-ink-weak">
+            Piezas gruesas, sin publicidad en el pecho, escudos bordados a mano.
+          </p>
+        </div>
+        <div class="tag-card-solid">
+          <span class="era-badge era-80">80s</span>
+          <h3 class="mt-3 text-lg font-semibold">Llegan los patrocinios</h3>
+          <p class="mt-2 text-sm text-ink-weak">
+            Primeras marcas al pecho, cuellos en V y franjas geométricas.
+          </p>
+        </div>
+        <div class="tag-card-solid">
+          <span class="era-badge era-90">90s</span>
+          <h3 class="mt-3 text-lg font-semibold">Poliéster y estampados</h3>
+          <p class="mt-2 text-sm text-ink-weak">
+            Texturas atrevidas, degradados y los cortes más holgados del fútbol.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================
+         CUIDADO (care guide, replaces testimonials position with something equally useful)
+         ======================= -->
+    <section id="cuidado" class="max-w-screen-xl mx-auto px-4 sm:px-6 py-16">
+      <h2 class="section-title">Cómo cuidar una casaca de colección</h2>
+      <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="tag-card">
+          <i class="fa-solid fa-droplet icon-on-soft text-xl"></i>
+          <h3 class="mt-3 font-semibold">Lavado a mano, agua fría</h3>
+          <p class="mt-2 text-sm text-ink-weak">
+            Nada de secadora. El algodón viejo encoge y el poliéster pierde el estampado.
+          </p>
+        </div>
+        <div class="tag-card">
+          <i class="fa-solid fa-sun icon-on-soft text-xl"></i>
+          <h3 class="mt-3 font-semibold">Secar a la sombra</h3>
+          <p class="mt-2 text-sm text-ink-weak">
+            El sol directo amarillea el blanco y decolora los parches bordados.
+          </p>
+        </div>
+        <div class="tag-card">
+          <i class="fa-solid fa-box-archive icon-on-soft text-xl"></i>
+          <h3 class="mt-3 font-semibold">Guardar doblada, no colgada</h3>
+          <p class="mt-2 text-sm text-ink-weak">
+            El peso de la tela vieja deforma los hombros si queda mucho tiempo en gancho.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================
+         TESTIMONIOS
+         ======================= -->
+    <section id="testimonios" class="max-w-screen-xl mx-auto px-4 sm:px-6 py-16">
+      <h2 class="section-title">Lo que dicen los coleccionistas</h2>
+      <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <blockquote class="tag-card-solid">
+          <p class="text-base">
+            "Llegó con la ficha de la temporada y todo. Se nota que la revisan antes de enviarla."
+          </p>
+          <footer class="mt-4 flex items-center gap-3 text-sm text-ink-weak">
+            <i class="fa-solid fa-user"></i> Camila, coleccionista
+          </footer>
+        </blockquote>
+        <blockquote class="tag-card-solid">
+          <p class="text-base">
+            "Pedí la del 86 y la tela es idéntica a la que tenía mi papá guardada."
+          </p>
+          <footer class="mt-4 flex items-center gap-3 text-sm text-ink-weak">
+            <i class="fa-solid fa-user"></i> Julián, hincha de toda la vida
+          </footer>
+        </blockquote>
+        <blockquote class="tag-card-solid">
+          <p class="text-base">
+            "El estado real está descrito sin maquillaje. Compré con confianza."
+          </p>
+          <footer class="mt-4 flex items-center gap-3 text-sm text-ink-weak">
+            <i class="fa-solid fa-user"></i> Rosa, tienda de barrio
+          </footer>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- =======================
+         CTA
+         ======================= -->
+    <section class="relative">
+      <div
+        class="absolute inset-0 -z-10 bg-gradient-to-b from-surface to-pitch-100 dark:from-surface dark:to-white/5"
+      ></div>
+      <div class="max-w-screen-xl mx-auto px-4 sm:px-6 py-16">
+        <div class="tag-card-solid md:flex md:items-center md:justify-between md:gap-8">
+          <div>
+            <h3 class="text-xl font-semibold">¿No sabes qué talla pedir?</h3>
+            <p class="mt-2 text-sm text-ink-weak">
+              Descarga la guía de tallas por época: los cortes de los 70 no son los de los 90.
+            </p>
+          </div>
+          <a href="#boletin" class="btn btn-primary mt-4 md:mt-0">
+            <i class="fa-solid fa-ruler" aria-hidden="true"></i>
+            Quiero la guía de tallas
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================
+         CONTACTO & BOLETÍN
+         ======================= -->
+    <section id="contacto" class="max-w-screen-xl mx-auto px-4 sm:px-6 py-16">
+      <div class="grid lg:grid-cols-2 gap-10">
+        <!-- Contacto -->
+        <div>
+          <h2 class="section-title">Contacto</h2>
+          <p class="mt-2 text-ink-weak">
+            ¿Buscas una casaca puntual o quieres vender la tuya? Escríbenos.
+          </p>
+
+          <form class="mt-6 space-y-4" aria-labelledby="contact-form-title">
+            <h3 id="contact-form-title" class="sr-only">Formulario de contacto</h3>
+            <div>
+              <label for="name" class="block text-sm font-medium">Nombre completo</label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                class="input mt-1"
+                placeholder="Andrea Gómez"
+                autocomplete="name"
+                required
+              />
+            </div>
+            <div>
+              <label for="email" class="block text-sm font-medium">Correo</label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                class="input mt-1"
+                placeholder="andrea@correo.com"
+                autocomplete="email"
+                required
+              />
+            </div>
+            <div>
+              <label for="message" class="block text-sm font-medium">Mensaje</label>
+              <textarea
+                id="message"
+                name="message"
+                rows="4"
+                class="input mt-1 resize-y"
+                placeholder="Busco la camiseta de..."
+                required
+              ></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">
+              <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
+              Enviar mensaje
+            </button>
+          </form>
+        </div>
+
+        <!-- Boletín -->
+        <div id="boletin">
+          <h2 class="section-title">Boletín de nuevos ingresos</h2>
+          <p class="mt-2 text-ink-weak">
+            Avisamos primero a la lista cuando llega una pieza poco común.
+          </p>
+
+          <form class="mt-6" aria-labelledby="newsletter-title">
+            <h3 id="newsletter-title" class="sr-only">Suscripción al boletín</h3>
+            <div class="flex flex-col sm:flex-row gap-3">
+              <label class="sr-only" for="news-email">Correo</label>
+              <input
+                id="news-email"
+                type="email"
+                class="input"
+                placeholder="tu@correo.com"
+                required
+              />
+              <button type="submit" class="btn btn-secondary">
+                <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+                Suscribirme
+              </button>
+            </div>
+            <p class="mt-3 text-xs text-ink-weak">
+              Un correo al mes, cuando entra mercancía nueva. Puedes darte de baja cuando quieras.
+            </p>
+          </form>
+
+          <div class="mt-8 tag-card">
+            <div class="flex items-start gap-3">
+              <i class="fa-solid fa-shield-halved text-maroon-600 dark:text-gold-500 mt-1.5" aria-hidden="true"></i>
+              <div>
+                <p class="font-medium">Cada pieza es única</p>
+                <p class="text-sm text-ink-weak">
+                  No manejamos inventario en serie: si la casaca ya se vendió, no hay una igual.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================
+         FOOTER
+         ======================= -->
+    <footer class="border-t-4 border-pitch-800 dark:border-gold-500">
+      <div class="max-w-screen-xl mx-auto px-4 sm:px-6 py-10 text-sm">
+        <div
+          class="flex flex-col md:flex-row md:items-center md:justify-between gap-4"
+        >
+          <p class="text-ink-weak">
+            © <span id="year"></span> Casaca Retro. Todos los derechos reservados.
+          </p>
+          <ul class="flex flex-wrap items-center gap-4">
+            <li><a class="hover:underline" href="#home">Inicio</a></li>
+            <li><a class="hover:underline" href="#coleccion">Colección</a></li>
+            <li><a class="hover:underline" href="#decadas">Décadas</a></li>
+            <li><a class="hover:underline" href="#contacto">Contacto</a></li>
+          </ul>
+        </div>
+
+        <div class="mt-6 text-xs text-ink-weak">
+          <p>
+            Las ilustraciones de casacas son diseños propios, no representan clubes ni
+            marcas reales. Página de ejemplo construida con Tailwind CSS v4 (Play CDN).
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- =======================
+         SCRIPTS
+         ======================= -->
+    <script>
+      const btn = document.getElementById("themeToggle");
+      btn?.addEventListener("click", () => {
+        const root = document.documentElement;
+        const isDark = root.classList.toggle("dark");
+        btn.setAttribute("aria-pressed", String(isDark));
+        localStorage.setItem("theme", isDark ? "dark" : "light");
+      });
+
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>
